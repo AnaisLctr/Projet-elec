@@ -73,9 +73,32 @@ void setup() {
 }
 
 void loop() {
-  analogWrite(ENA,255);
-  analogWrite(ENB,255);
-  
+  while (mySerial.available()) {
+    caract = mySerial.read();
+    Serial.println(caract);
+    switch(caract){
+      case 'A':
+        avancer();
+        break;
+      case 'R':
+        reculer();
+        break;
+      case 'D':
+        droit();
+        break;
+      case 'G':
+        gauche();
+        break;
+      case '0':
+        analogWrite(END,0); //la voiture s'arrête lorsque l'on appuie sur aucun bouton
+        analogWrite(ENG,0);
+        break;
+      case 'L': //quand on appuie sur le bouton 'L', les roues du canon jettent la balle
+        analogWrite(ENA,150); 
+        analogWrite(ENB,150);
+        break;
+    }
+  }
 }
 
 
@@ -127,10 +150,4 @@ void gauche(){
 
   analogWrite(END,150); //vitesse droit
   analogWrite(ENG,150); //vitesse gauche
-}
-
-
-void moteursCanon(int vitesse){
-  analogWrite(ENA,vitesse);
-  analogWrite(ENB,vitesse);
 }
